@@ -310,6 +310,7 @@ class FlipMove extends Component<ConvertedProps, FlipMoveState> {
     // into the nextChildren in its ORIGINAL position. Note that, as we keep
     // inserting old items into the new list, the "original" position will
     // keep incrementing.
+    /*
     let numOfChildrenLeaving = 0;
     this.state.children.forEach((child: ChildData, index) => {
       const isLeaving = !find(({ key }) => key === getKey(child), nextChildren);
@@ -323,6 +324,21 @@ class FlipMove extends Component<ConvertedProps, FlipMoveState> {
 
       updatedChildren.splice(nextChildIndex, 0, nextChild);
       numOfChildrenLeaving += 1;
+    });
+
+    return updatedChildren;
+*/
+    // CHANGED HERE
+    this.state.children.forEach((child: ChildData) => {
+      const isLeaving = !find(({ key }) => key === getKey(child), nextChildren);
+
+      // If the child isn't leaving (or, if there is no leave animation),
+      // we don't need to add it into the state children.
+      if (!isLeaving || !this.props.leaveAnimation) return;
+
+      const nextChild: ChildData = { ...child, leaving: true };
+
+      updatedChildren.push(nextChild);
     });
 
     return updatedChildren;
